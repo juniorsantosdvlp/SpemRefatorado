@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
+
 import com.prosige.dominio.ArquivoSPED;
 import com.prosige.dominio.Registro;
 
@@ -34,7 +35,8 @@ public class UnificadorContribuicoes {
 		unificaReg0200();
 		unificaRegComClasse("0400");
 		unificaReg0450();
-		arrayArquivoUnificado.add(arrayArquivoFilial.stream().filter(registro -> registro[0].equals("0140")).findFirst().get());
+		arrayArquivoUnificado
+				.add(arrayArquivoFilial.stream().filter(registro -> registro[0].equals("0140")).findFirst().get());// adiciona reg 0140 da filial
 		unificaReg0500();
 		unificaReg0990();
 		unificaRegC();
@@ -48,10 +50,10 @@ public class UnificadorContribuicoes {
 	}
 
 	/**
-	 * Inicia o Arquivo Unificado escreve até o registro 0111, atualizando o valor
+	 * Inicia o Arquivo Unificado escreve atï¿½ o registro 0111, atualizando o valor
 	 * do mesmo
 	 */
-	
+
 	public void iniciaArquivoUnificado() {
 
 		String[] reg0111Unificado = new String[6];
@@ -84,7 +86,9 @@ public class UnificadorContribuicoes {
 				break;
 
 			}
+
 			arrayArquivoUnificado.add(strings);
+
 		}
 
 		// Soma Registros Matriz com filial
@@ -201,8 +205,8 @@ public class UnificadorContribuicoes {
 			if (podeAdicionar) {
 				arrayArquivoUnificado.add(strings);
 				contador++;
-			}
 
+			}
 		}
 
 		podeAdicionar = false;
@@ -237,14 +241,13 @@ public class UnificadorContribuicoes {
 			arrayArquivoUnificado.add(reg);
 
 		});
-
 	}
 
 	public void unificaRegComClasse(String regParaUnificar) {
 
 		LinkedHashSet<Registro> registros = new LinkedHashSet<Registro>();
 
-		arrayArquivoMatriz.stream().filter (registro -> registro[0].equals(regParaUnificar) )
+		arrayArquivoMatriz.stream().filter(registro -> registro[0].equals(regParaUnificar))
 				.forEach(reg -> registros.add(new Registro(reg)));
 
 		arrayArquivoFilial.stream().filter(registro -> registro[0].equals(regParaUnificar))
@@ -252,10 +255,11 @@ public class UnificadorContribuicoes {
 
 		registros.forEach(c -> arrayArquivoUnificado.add(c.getCampo()));
 
-	}
+	};
 
 	public void unificaRegM() {
 
+		List<String[]> arrayBlocoM = new ArrayList<>();
 		boolean podeAdicionar = false;
 
 		for (String[] strings : arrayArquivoMatriz) {
@@ -263,15 +267,18 @@ public class UnificadorContribuicoes {
 			if (strings[0].equals("I001"))
 				podeAdicionar = true;
 
-			if (strings[0].equals("I001"))
-				podeAdicionar = true;
-			
+			if (strings[0].equals("M990"))
+				podeAdicionar = false;
+
 			if (podeAdicionar) {
-				// arrayArquivoUnificadoe.add(strings);
+				arrayBlocoM.add(strings);
+
 			}
 		}
+	}
 
+	public void unificaContadores() {
+		// atualiza contador geral
 		arrayArquivoUnificado.get(arrayArquivoUnificado.size() - 1)[1] = Integer.toString(arrayArquivoUnificado.size());
-
 	}
 }

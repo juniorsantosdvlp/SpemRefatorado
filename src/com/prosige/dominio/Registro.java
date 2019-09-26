@@ -3,13 +3,11 @@ package com.prosige.dominio;
 import java.util.Arrays;
 
 public class Registro {
-	
+
 	private String[] campo;
-	
-	
 
 	public Registro(String[] reg) {
-	this.campo = reg;
+		this.campo = reg;
 	}
 
 	public String[] getCampo() {
@@ -41,8 +39,4 @@ public class Registro {
 			return false;
 		return true;
 	}
-
-	
-	
-
 }
